@@ -80,13 +80,13 @@ class KillProcessCommand:
 @click.option(
     "--terminate-father-process",
     is_flag=True,
-    help="is father process name must be also kill ?",
+    help="kill father process",
 )
 @click.option("-f", "--force", is_flag=True, help="never prompt before removal")
 @click.option(
     "--dry-run",
     is_flag=True,
-    help="do not kill anything but log the list of process to kill",
+    help="do not kill anything but log the list of processes to kill",
 )
 @click.option("--debug", is_flag=True, help="debug mode")
 def cli(process_name, terminate_father_process, force, dry_run, debug):

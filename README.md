@@ -13,10 +13,10 @@ Options:
   --process-name TEXT         all child processes for <process-name> will be
                               killed
 
-  --terminate-father-process  is father process name must be also kill ?
+  --terminate-father-process  kill father process
   -f, --force                 never prompt before removal
-  --dry-run                   do not kill anything but log the list of process
-                              to kill
+  --dry-run                   do not kill anything but log the list of
+                              processes to kill
 
   --debug                     debug mode
   --help                      Show this message and exit.
