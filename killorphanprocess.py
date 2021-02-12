@@ -17,7 +17,6 @@ class KillProcessCommand:
     logger: logging.Logger
     process_killed_count: int = 0
 
-
     def process_iter(self):
         """iterator that return process that name is sudo"""
         for proc in psutil.process_iter():
@@ -56,7 +55,6 @@ class KillProcessCommand:
             except psutil.NoSuchProcess:
                 pass
 
-
         gone, alive = psutil.wait_procs(
             processes_to_kill, timeout=timeout, callback=self.on_terminate
         )
@@ -67,33 +65,41 @@ class KillProcessCommand:
         for (i, proc) in enumerate(self.process_iter()):
             self.logger.info(f"#{i} - {proc}")
             self.kill_process_tree(proc.pid)
-        self.logger.info(f'{self.process_killed_count} processes killed')
+        self.logger.info(f"{self.process_killed_count} processes killed")
         self.logger.info("-- end --")
 
-@click.command(help="An utility command for killing all orphan processes on unix/linux system")
-@click.option( '--process-name', default='sudo',
-              help="all child processes for <process-name> will be killed")
-@click.option( '--terminate-father-process',  is_flag=True,
-              help="is father process name must be also kill ?")
-@click.option( '-f', '--force', is_flag=True,
-              help="never prompt before removal")
-@click.option( '--dry-run', is_flag=True,
-              help="do not kill anything but log the list of process to kill")
-@click.option( '--debug', is_flag=True,
-              help="debug mode")
-def cli(process_name, terminate_father_process, force, dry_run,
-        debug):
+
+@click.command(
+    help="An utility command for killing all orphan processes on unix/linux system"
+)
+@click.option(
+    "--process-name",
+    default="sudo",
+    help="all child processes for <process-name> will be killed",
+)
+@click.option(
+    "--terminate-father-process",
+    is_flag=True,
+    help="is father process name must be also kill ?",
+)
+@click.option("-f", "--force", is_flag=True, help="never prompt before removal")
+@click.option(
+    "--dry-run",
+    is_flag=True,
+    help="do not kill anything but log the list of process to kill",
+)
+@click.option("--debug", is_flag=True, help="debug mode")
+def cli(process_name, terminate_father_process, force, dry_run, debug):
     log_level = logging.INFO
     if debug:
         log_level = logging.DEBUG
-    logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s',
-                        level=log_level)
+    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s", level=log_level)
     logger = logging.getLogger(__name__)
-    command = KillProcessCommand(process_name=process_name,
-                                 terminate_father_process=terminate_father_process,
-                                 force=force,
-                                 dry_run=dry_run,
-                                 logger=logger)
+    command = KillProcessCommand(
+        process_name=process_name,
+        terminate_father_process=terminate_father_process,
+        force=force,
+        dry_run=dry_run,
+        logger=logger,
+    )
     command()
-
-
